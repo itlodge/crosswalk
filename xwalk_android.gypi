@@ -146,6 +146,7 @@
         'additional_input_paths': [
           '<(PRODUCT_DIR)/xwalk_runtime_lib/assets/jsapi/device_capabilities_api.js',
           '<(PRODUCT_DIR)/xwalk_runtime_lib/assets/jsapi/presentation_api.js',
+          '<(PRODUCT_DIR)/xwalk_runtime_lib/assets/media_codecs.xml',
           '<(PRODUCT_DIR)/xwalk_runtime_lib/assets/xwalk.pak',
         ],
         'asset_location': '<(ant_build_out)/xwalk_runtime_lib/assets',
@@ -178,6 +179,7 @@
           'files': [
             'experimental/presentation/presentation_api.js',
             'sysapps/device_capabilities/device_capabilities_api.js',
+            'sysapps/device_capabilities/media_codecs.xml',
           ],
         },
       ],
