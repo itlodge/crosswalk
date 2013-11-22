@@ -93,6 +93,23 @@
               onSuccess();
             }, Error);
 
+        system.getCodecsInfo()
+            .then(function(codec) {
+              var msg = '';
+              for (var i = 0; i < codec.audioCodecs.length; ++i) {
+                msg += enumerateAllProps(codec.audioCodecs[i]);
+                msg += '---------\n';
+              }
+              for (var i = 0; i < codec.videoCodecs.length; ++i) {
+                msg += enumerateAllProps(codec.videoCodecs[i]);
+                msg += '---------\n';
+              }
+              var output = document.getElementById('codecs');
+              output.value += msg;
+              output.scrollTop = output.scrollHeight;
+              onSuccess();
+            }, Error);
+
         system.addEventListener('onattach', function(storage) {
             var output = document.getElementById('event');
             var msg = enumerateAllProps(storage);
@@ -143,6 +160,10 @@
   <div class="storage">
     <p class="subtitle center">Storage</p>
     <textarea id="storage" readonly=true></textarea>
+  </div>
+  <div class="codecs">
+    <p class="subtitle center">Codecs</p>
+    <textarea id="codecs" readonly=true></textarea>
   </div>
   <div class="event">
     <p class="subtitle center">Event</p>
