@@ -16,6 +16,7 @@
 #include "xwalk/runtime/browser/android/xwalk_dev_tools_server.h"
 #include "xwalk/runtime/browser/android/xwalk_settings.h"
 #include "xwalk/runtime/browser/android/xwalk_web_contents_delegate.h"
+#include "xwalk/sysapps/device_capabilities/android/media_codec_ics.h"
 
 namespace xwalk {
 
@@ -23,6 +24,7 @@ static base::android::RegistrationMethod kXWalkRegisteredMethods[] = {
   // Register JNI for xwalk classes.
   { "AndroidProtocolHandler", RegisterAndroidProtocolHandler },
   { "InputStream", RegisterInputStream },
+  { "MediaCodeICS", sysapps::RegisterMediaCodecICS },
   { "NavigationInterception",
       navigation_interception::RegisterNavigationInterceptionJni },
   { "WebContentsDelegateAndroid",

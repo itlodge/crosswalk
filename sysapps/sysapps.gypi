@@ -22,4 +22,12 @@
   'dependencies': [
     'sysapps/sysapps_resources.gyp:xwalk_sysapps_resources',
   ],
+  'conditions': [
+    ['OS=="android"', {
+      'sources': [
+        'device_capabilities/android/media_codec_ics.cc',
+        'device_capabilities/android/media_codec_ics.h',
+      ],
+    }],
+  ],
 }

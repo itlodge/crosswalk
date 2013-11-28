@@ -59,13 +59,14 @@
                                                                '-> cpu load: ' + cpu.load;
               onSuccess();
             }, Error);
-
+/*
         system.getMemoryInfo()
             .then(function(memory) {
               document.getElementById('memory').innerHTML = 'Total capacity: ' + memory.capacity / 1024 + '(MB)<br>' +
                                                             'Avail capacity: ' + memory.availCapacity / 1024 + '(MB)';
               onSuccess();
             }, Error);
+            */
 
         system.getDisplayInfo()
             .then(function(display) {
