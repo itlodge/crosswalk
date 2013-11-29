@@ -4,40 +4,55 @@
 
 package org.xwalk.runtime.extension.api.device_capabilities;
 
-import org.chromium.base.JNINamespace;
+import java.util.HashSet;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import android.util.Log;
+
 import org.json.JSONObject;
+
+import org.chromium.base.JNINamespace;
 
 @JNINamespace("xwalk::sysapps")
 public class MediaCodecICS extends XWalkMediaCodec {
     public MediaCodecICS(DeviceCapabilities instance) {
+        mDeviceCapabilities = instance;
+
+        mAudioCodecsSet = new HashSet<AudioCodecElement>();
+        mVideoCodecsSet = new HashSet<VideoCodecElement>();
+
+        getCodecsList();
     }
 
     @Override
-    public JSONObject getCodecsInfo() {
-        JSONObject out = new JSONObject();
-        JSONArray audioCodecsArray = new JSONArray();
-        JSONArray videoCodecsArray = new JSONArray();
+    protected void getCodecsList() {
+        String[] codecs = nativeGetCodecs().split(",");
+        for (String codec : codecs) {
+            String[] attrs = codec.split("\\|");
+            String name = attrs[0].toUpperCase();
+            String type = attrs[1];
 
-        int tmp = -1;
-        tmp = nativeGetInt();
-        try {
-            JSONObject obj = new JSONObject();
-            obj.put("format", tmp);
-            obj.put("encode", false);
-            obj.put("hwAccel", false);
-            videoCodecsArray.put(obj);
-
-            out.put("audioCodecs", audioCodecsArray);
-            out.put("videoCodecs", videoCodecsArray);
-        } catch (JSONException e) {
-            return mDeviceCapabilities.setErrorMessage(e.toString());
+            if (type.equals("audio")) {
+                for (String audioCodecName : AUDIO_CODEC_NAMES) {
+                    if (!name.contains(audioCodecName)) {
+                        continue;
+                    }
+                    mAudioCodecsSet.add(new AudioCodecElement(audioCodecName));
+                    break;
+                } 
+            } else {
+                for (String videoCodecName : VIDEO_CODEC_NAMES) {
+                    if (!name.contains(videoCodecName)) {
+                        continue;
+                    }
+                    boolean isEncoder = attrs[2].equals("encoder") ? true : false;
+                    //FIXME (fyraimar) Get the right hwAccel value
+                    mVideoCodecsSet.add(new VideoCodecElement(
+                            videoCodecName, isEncoder, false));
+                    break;
+                }
+            }
         }
-
-        return out;
     }
 
-    private native int nativeGetInt();
+    private native String nativeGetCodecs();
 }

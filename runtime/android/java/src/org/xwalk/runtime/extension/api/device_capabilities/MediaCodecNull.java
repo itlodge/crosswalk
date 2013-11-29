@@ -4,14 +4,18 @@
 
 package org.xwalk.runtime.extension.api.device_capabilities;
 
-import org.json.JSONObject;
+import java.util.HashSet;
 
 public class MediaCodecNull extends XWalkMediaCodec {
     public MediaCodecNull(DeviceCapabilities instance) {
+        mDeviceCapabilities = instance;
+
+        mAudioCodecsSet = new HashSet<AudioCodecElement>();
+        mVideoCodecsSet = new HashSet<VideoCodecElement>();
     }
 
     @Override
-    public JSONObject getCodecsInfo() {
-        return new JSONObject();
+    protected void getCodecsList() {
+        return;
     }
 }

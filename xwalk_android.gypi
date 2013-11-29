@@ -21,7 +21,7 @@
         '..',
       ],
       'ldflags': [
-        '-Wl,--no-fatal-warnings',
+        '-Wl,--no-fatal-warnings,-ldl',
       ],
       'sources': [
         'runtime/app/android/xwalk_entry_point.cc',

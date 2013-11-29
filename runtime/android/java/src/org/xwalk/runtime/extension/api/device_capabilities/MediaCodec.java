@@ -6,10 +6,6 @@ package org.xwalk.runtime.extension.api.device_capabilities;
 
 import java.util.HashSet;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class MediaCodec extends XWalkMediaCodec {
     public MediaCodec(DeviceCapabilities instance) {
         mDeviceCapabilities = instance;
@@ -23,35 +19,7 @@ public class MediaCodec extends XWalkMediaCodec {
     }
 
     @Override
-    public JSONObject getCodecsInfo() {
-        JSONObject outputObject = new JSONObject();
-        JSONArray audioCodecsArray = new JSONArray();
-        JSONArray videoCodecsArray = new JSONArray();
-
-        try {
-            for (AudioCodecElement codecToAdd : mAudioCodecsSet) {
-                JSONObject codecsObject = new JSONObject();
-                codecsObject.put("format", codecToAdd.codecName);
-                audioCodecsArray.put(codecsObject);
-            }
-            for (VideoCodecElement codecToAdd : mVideoCodecsSet) {
-                JSONObject codecsObject = new JSONObject();
-                codecsObject.put("format", codecToAdd.codecName);
-                codecsObject.put("encode", codecToAdd.isEncoder);
-                codecsObject.put("hwAccel", codecToAdd.hwAccel);
-                audioCodecsArray.put(codecsObject);
-            }
-
-            outputObject.put("audioCodecs", audioCodecsArray);
-            outputObject.put("videoCodecs", videoCodecsArray);
-        } catch (JSONException e) {
-            return mDeviceCapabilities.setErrorMessage(e.toString());
-        }
-
-        return outputObject;
-    }
-
-    public void getCodecsList() {
+    protected void getCodecsList() {
         int numCodecs = android.media.MediaCodecList.getCodecCount();
         for (int i = 0; i < numCodecs; i++) {
             android.media.MediaCodecInfo codecInfo =

@@ -15,6 +15,7 @@
     .memory { background-color: #FFF0F5; }
     .storage { background-color: #F0FFF0; }
     .event { background-color: #D1D1D1; }
+    #codecs { background-color: #ddd; height: 50%; }
   </style>
   <body>
   <script>
@@ -96,11 +97,12 @@
 
         system.getCodecsInfo()
             .then(function(codec) {
-              var msg = '';
+              var msg = 'Audio:\n\n';
               for (var i = 0; i < codec.audioCodecs.length; ++i) {
                 msg += enumerateAllProps(codec.audioCodecs[i]);
                 msg += '---------\n';
               }
+              msg += '\nVideo:\n\n'
               for (var i = 0; i < codec.videoCodecs.length; ++i) {
                 msg += enumerateAllProps(codec.videoCodecs[i]);
                 msg += '---------\n';

@@ -6,6 +6,8 @@ package org.xwalk.runtime.extension.api.device_capabilities;
 
 import java.util.Set;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Build;
@@ -87,5 +89,33 @@ public abstract class XWalkMediaCodec {
         return mInstance;
     }
 
-    public abstract JSONObject getCodecsInfo();
+    public JSONObject getCodecsInfo() {
+        JSONObject outputObject = new JSONObject();
+        JSONArray audioCodecsArray = new JSONArray();
+        JSONArray videoCodecsArray = new JSONArray();
+
+        try {
+            for (AudioCodecElement codecToAdd : mAudioCodecsSet) {
+                JSONObject codecsObject = new JSONObject();
+                codecsObject.put("format", codecToAdd.codecName);
+                audioCodecsArray.put(codecsObject);
+            }
+            for (VideoCodecElement codecToAdd : mVideoCodecsSet) {
+                JSONObject codecsObject = new JSONObject();
+                codecsObject.put("format", codecToAdd.codecName);
+                codecsObject.put("encode", codecToAdd.isEncoder);
+                codecsObject.put("hwAccel", codecToAdd.hwAccel);
+                videoCodecsArray.put(codecsObject);
+            }
+
+            outputObject.put("audioCodecs", audioCodecsArray);
+            outputObject.put("videoCodecs", videoCodecsArray);
+        } catch (JSONException e) {
+            return mDeviceCapabilities.setErrorMessage(e.toString());
+        }
+
+        return outputObject;
+    }
+
+    protected abstract void getCodecsList();
 }
